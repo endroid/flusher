@@ -14,6 +14,7 @@ use Endroid\Bundle\DataSanitizeBundle\Entity\Project;
 use Endroid\Bundle\DataSanitizeBundle\Entity\Tag;
 use Endroid\Bundle\DataSanitizeBundle\Entity\Task;
 use Endroid\Bundle\DataSanitizeBundle\Entity\User;
+use Endroid\Flusher\Flusher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,21 +37,23 @@ class LoadExampleDataCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = $this->getEntityManager();
+        $flusher = $this->getFlusher();
 
         for ($n = 1; $n <= 100; $n++) {
             $task = new Task();
             $task->setName('Task '.$n);
-            $manager->persist($task);
-            $manager->flush();
+            $flusher->getManager()->persist($task);
+            $flusher->flush();
         }
+
+        $flusher->finish();
     }
 
     /**
-     * @return EntityManager
+     * @return Flusher
      */
-    protected function getEntityManager()
+    protected function getFlusher()
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        return $this->getContainer()->get('endroid_flusher.flusher');
     }
 }

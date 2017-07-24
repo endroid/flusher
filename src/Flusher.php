@@ -26,6 +26,14 @@ class Flusher
         $this->manager = $manager;
     }
 
+    /**
+     * @return EntityManager
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
     public function flush()
     {
         $this->manager->flush();

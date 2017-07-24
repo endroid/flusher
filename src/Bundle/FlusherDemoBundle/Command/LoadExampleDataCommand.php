@@ -9,11 +9,7 @@
 
 namespace Endroid\Flusher\Bundle\FlusherDemoBundle\Command;
 
-use Doctrine\ORM\EntityManager;
-use Endroid\Bundle\DataSanitizeBundle\Entity\Project;
-use Endroid\Bundle\DataSanitizeBundle\Entity\Tag;
-use Endroid\Bundle\DataSanitizeBundle\Entity\Task;
-use Endroid\Bundle\DataSanitizeBundle\Entity\User;
+use Endroid\Flusher\Bundle\FlusherDemoBundle\Entity\Task;
 use Endroid\Flusher\Flusher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +35,7 @@ class LoadExampleDataCommand extends ContainerAwareCommand
     {
         $flusher = $this->getFlusher();
 
-        for ($n = 1; $n <= 100; $n++) {
+        for ($n = 1; $n <= 50000; $n++) {
             $task = new Task();
             $task->setName('Task '.$n);
             $flusher->getManager()->persist($task);

@@ -16,7 +16,7 @@ This library helps you write entities to the database without worrying when to f
 Use [Composer](https://getcomposer.org/) to install the library.
 
 ``` bash
-$ composer require endroid/flush
+$ composer require endroid/flusher
 ```
 
 ## Symfony integration

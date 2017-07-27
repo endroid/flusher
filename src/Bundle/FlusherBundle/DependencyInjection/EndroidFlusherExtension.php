@@ -9,6 +9,7 @@
 
 namespace Endroid\Flusher\Bundle\FlusherBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -21,7 +22,16 @@ class EndroidFlusherExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), $configs);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $flusherDefinition = $container->getDefinition('endroid_flusher.flusher');
+
+        if (isset($config['step_size'])) {
+            $flusherDefinition->addMethodCall('setStepSize', [$config['step_size']]);
+        }
     }
 }

@@ -20,6 +20,11 @@ class Flusher
     protected $manager;
 
     /**
+     * @var float
+     */
+    protected $stepSize = 1.5;
+
+    /**
      * @var int
      */
     protected $batchSize;
@@ -54,6 +59,20 @@ class Flusher
         return $this->manager;
     }
 
+    /**
+     * @param float $stepSize
+     * @return $this
+     */
+    public function setStepSize($stepSize)
+    {
+        $this->stepSize = $stepSize;
+
+        return $this;
+    }
+
+    /**
+     *
+     */
     public function flush()
     {
         $this->batchNumber++;
@@ -67,13 +86,17 @@ class Flusher
         $stopwatch->start('flush');
 
         $this->manager->flush();
-        $this->batchNumber = 0;
+        $this->manager->clear();
 
         $event = $stopwatch->stop('flush');
 
         $this->updateBatchSize($event->getPeriods()[0]->getDuration());
     }
 
+    /**
+     * Makes sure all last items are flushed even if the batch
+     * size was not reached yet.
+     */
     public function finish()
     {
         $this->manager->flush();
@@ -88,6 +111,7 @@ class Flusher
 
         $this->ratios[$this->batchSize] = $ratio;
 
+        $this->batchNumber = 0;
         $this->batchSize = array_search(min($this->ratios), $this->ratios);
 
         // Best batch size is the maximum batch size: try a higher value
@@ -98,6 +122,6 @@ class Flusher
 
     protected function increaseBatchSize()
     {
-        $this->batchSize = ceil($this->batchSize * 1.5);
+        $this->batchSize = (int) ceil($this->batchSize * $this->stepSize);
     }
 }

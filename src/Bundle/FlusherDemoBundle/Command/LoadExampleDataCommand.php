@@ -12,6 +12,7 @@ namespace Endroid\Flusher\Bundle\FlusherDemoBundle\Command;
 use Endroid\Flusher\Bundle\FlusherDemoBundle\Entity\Task;
 use Endroid\Flusher\Flusher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,6 +26,7 @@ class LoadExampleDataCommand extends ContainerAwareCommand
         $this
             ->setName('endroid:flusher:flush-example-data')
             ->setDescription('Flushes example data')
+            ->addOption('count', null, InputArgument::OPTIONAL, 'Number of entities to flush', 50000)
         ;
     }
 
@@ -35,7 +37,7 @@ class LoadExampleDataCommand extends ContainerAwareCommand
     {
         $flusher = $this->getFlusher();
 
-        for ($n = 1; $n <= 50000; $n++) {
+        for ($n = 1; $n <= (int) $input->getOption('count'); $n++) {
             $task = new Task();
             $task->setName('Task '.$n);
             $flusher->getManager()->persist($task);

@@ -10,6 +10,7 @@
 namespace Endroid\Flusher;
 
 use Doctrine\ORM\EntityManager;
+use Endroid\Flusher\Bundle\FlusherDemoBundle\Entity\Task;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 class Flusher
@@ -30,11 +31,6 @@ class Flusher
     protected $batchSize;
 
     /**
-     * @var int
-     */
-    protected $batchNumber;
-
-    /**
      * @var float[]
      */
     protected $ratios;
@@ -48,7 +44,6 @@ class Flusher
 
         $this->ratios = [];
         $this->batchSize = 1;
-        $this->batchNumber = 0;
     }
 
     /**
@@ -75,10 +70,10 @@ class Flusher
      */
     public function flush()
     {
-        $this->batchNumber++;
+        $count = count($this->manager->getUnitOfWork()->getScheduledEntityInsertions()) + $this->manager->getUnitOfWork()->size();
 
         // Only flush upon latest of the current batch
-        if ($this->batchNumber < $this->batchSize) {
+        if ($count < $this->batchSize) {
             return;
         }
 
@@ -90,7 +85,7 @@ class Flusher
 
         $event = $stopwatch->stop('flush');
 
-        $this->updateBatchSize($event->getPeriods()[0]->getDuration());
+        $this->updateBatchSize($count, $event->getPeriods()[0]->getDuration());
     }
 
     /**
@@ -103,15 +98,15 @@ class Flusher
     }
 
     /**
+     * @param int $count
      * @param int $duration
      */
-    protected function updateBatchSize($duration)
+    protected function updateBatchSize($count, $duration)
     {
-        $ratio = $duration / $this->batchSize;
+        $ratio = $duration / $count;
 
         $this->ratios[$this->batchSize] = $ratio;
 
-        $this->batchNumber = 0;
         $this->batchSize = array_search(min($this->ratios), $this->ratios);
 
         // Best batch size is the maximum batch size: try a higher value

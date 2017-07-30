@@ -9,7 +9,16 @@ Flusher
 [![Monthly Downloads](http://img.shields.io/packagist/dm/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
 [![License](http://img.shields.io/packagist/l/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
 
-This library helps you write entities to the database without worrying when to flush.
+When you import or modify large amounts of data it is often necessary to define
+the optimal batch size before flushing: small batch sizes perform bad because of
+the overhead in each flush. And batch sizes that are too large perform bad because
+of the high memory usage and the need to calculate a large change set. Also the
+batch size you choose can give different results on different types of hardware.
+
+This library helps you write entities to the database without worrying about the
+batch size. It incrementally tries new batch sizes (given a step size), sticks
+with the one that gives the highest performance or switches to a better batch size
+if the circumstances have changed.
 
 ## Installation
 
@@ -19,9 +28,39 @@ Use [Composer](https://getcomposer.org/) to install the library.
 $ composer require endroid/flusher
 ```
 
+## Usage
+
+In order to enable auto flushing you first need to create a Flusher for the
+entity manager you are currently using.
+
+```php
+$flusher = new Flusher($manager);
+```
+
+Then when you performed operations on your entity manager you can call the
+flush() method on the flusher any time to notify there are changes.
+
+```php
+for ($n = 1; $n <= 50000; $n++) {
+    $task = new Task();
+    $task->setName('Task '.$n);
+    $manager->persist($task);
+    $flusher->flush();
+}
+```
+
+Because there is no way of knowing if there are pending flushes at the end you
+need to call finish() to make sure all data is flushed.
+
+```php
+$flusher->finish();
+```
+
 ## Symfony integration
 
-Register the Symfony bundle in the kernel.
+The library comes with a Symfony bundle that registers a flusher service
+(endroid_flusher.flusher) for your default entity manager. You can register the
+Symfony bundle in the kernel as follows.
 
 ```php
 // app/AppKernel.php

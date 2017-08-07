@@ -3,7 +3,7 @@
     "description": "Endroid Flusher",
     "keywords": ["endroid", "flusher", "bundle", "symfony"],
     "homepage": "https://github.com/endroid/Flusher",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
         {

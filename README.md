@@ -8,7 +8,6 @@ Flusher
 [![Total Downloads](http://img.shields.io/packagist/dt/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
 [![Monthly Downloads](http://img.shields.io/packagist/dm/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
 [![License](http://img.shields.io/packagist/l/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
-[![Döneren](https://img.shields.io/badge/d%C3%B6neren-+-green.svg)](https://www.thuisbezorgd.nl/has-dner-kebab)
 
 When you import or modify large amounts of data it is often necessary to define
 the optimal batch size before flushing: small batch sizes perform bad because of

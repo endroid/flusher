@@ -10,7 +10,9 @@
 namespace Endroid\Flusher;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Endroid\Flusher\Bundle\FlusherDemoBundle\Entity\Task;
+use Endroid\Flusher\Exception\PendingFlushesException;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 class Flusher
@@ -36,9 +38,14 @@ class Flusher
     protected $ratios;
 
     /**
-     * @param EntityManager $manager
+     * @var bool
      */
-    public function __construct(EntityManager $manager)
+    protected $hasPendingFlushes = false;
+
+    /**
+     * @param EntityManagerInterface $manager
+     */
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
 
@@ -66,7 +73,7 @@ class Flusher
     }
 
     /**
-     *
+     * Only executes when the current batch size is met.
      */
     public function flush()
     {
@@ -74,6 +81,7 @@ class Flusher
 
         // Only flush upon latest of the current batch
         if ($count < $this->batchSize) {
+            $this->hasPendingFlushes = true;
             return;
         }
 
@@ -85,6 +93,8 @@ class Flusher
 
         $event = $stopwatch->stop('flush');
 
+        $this->hasPendingFlushes = false;
+
         $this->updateBatchSize($count, $event->getPeriods()[0]->getDuration());
     }
 
@@ -95,6 +105,8 @@ class Flusher
     public function finish()
     {
         $this->manager->flush();
+
+        $this->hasPendingFlushes = false;
     }
 
     /**
@@ -118,5 +130,15 @@ class Flusher
     protected function increaseBatchSize()
     {
         $this->batchSize = (int) ceil($this->batchSize * $this->stepSize);
+    }
+
+    /**
+     * Checks if there exist pending flushes that are not executed.
+     */
+    public function __destruct()
+    {
+        if ($this->hasPendingFlushes) {
+            throw new PendingFlushesException('Please call finish() to ensure all flushes are executed');
+        }
     }
 }

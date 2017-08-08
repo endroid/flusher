@@ -9,6 +9,7 @@
 
 namespace Endroid\Flusher\Bundle\FlusherBundle\DependencyInjection;
 
+use Endroid\Flusher\FlusherEntityManager;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,5 +34,7 @@ class EndroidFlusherExtension extends Extension
         if (isset($config['step_size'])) {
             $flusherDefinition->addMethodCall('setStepSize', [$config['step_size']]);
         }
+
+        //        $container->setParameter('doctrine.orm.entity_manager.class', FlusherEntityManager::class);
     }
 }

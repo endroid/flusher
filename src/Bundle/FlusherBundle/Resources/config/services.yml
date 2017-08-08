@@ -2,3 +2,9 @@ services:
     endroid_flusher.flusher:
         class: Endroid\Flusher\Flusher
         arguments: [ '@doctrine.orm.entity_manager' ]
+
+    endroid_flusher.flusher_entity_manager:
+        public: false
+        class: Endroid\Flusher\FlusherEntityManager
+        decorates: doctrine.orm.default_entity_manager
+        arguments: [ '@endroid_flusher.flusher_entity_manager.inner', null ]

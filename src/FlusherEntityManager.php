@@ -40,7 +40,7 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
      */
     public function flush($entity = null)
     {
-        die('f');
+        $this->wrapped->flush();
     }
 
     /**

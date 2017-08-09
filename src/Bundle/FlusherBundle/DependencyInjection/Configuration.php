@@ -24,6 +24,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder
             ->root('endroid_flusher')
                 ->children()
+                    ->booleanNode('override_default_entity_manager')->defaultValue(false)->end()
                     ->scalarNode('step_size')->end()
         ;
 

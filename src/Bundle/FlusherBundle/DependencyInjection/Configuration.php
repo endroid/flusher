@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
             ->root('endroid_flusher')
                 ->children()
                     ->booleanNode('override_default_entity_manager')->defaultValue(false)->end()
+                    ->booleanNode('disable_entity_manager_flusher')->defaultValue(false)->end()
                     ->scalarNode('step_size')->end()
         ;
 

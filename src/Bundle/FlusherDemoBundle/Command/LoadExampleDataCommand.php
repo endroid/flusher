@@ -9,8 +9,10 @@
 
 namespace Endroid\Flusher\Bundle\FlusherDemoBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Endroid\Flusher\Bundle\FlusherDemoBundle\Entity\Task;
 use Endroid\Flusher\Flusher;
+use Endroid\Flusher\FlusherEntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,23 +37,25 @@ class LoadExampleDataCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $flusher = $this->getFlusher();
+        $manager = $this->getEntityManager();
 
         for ($n = 1; $n <= (int) $input->getOption('count'); $n++) {
             $task = new Task();
             $task->setName('Task '.$n);
-            $flusher->getManager()->persist($task);
-            $flusher->flush();
+            $manager->persist($task);
+            $manager->flush();
         }
 
-        $flusher->finish();
+        if ($manager instanceof FlusherEntityManager) {
+            $manager->finish();
+        }
     }
 
     /**
-     * @return Flusher
+     * @return EntityManagerInterface
      */
-    protected function getFlusher()
+    protected function getEntityManager()
     {
-        return $this->getContainer()->get('endroid_flusher.flusher');
+        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 }

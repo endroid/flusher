@@ -31,6 +31,9 @@ class EndroidFlusherExtension extends Extension
         $flusherDefinition = $container->getDefinition('endroid_flusher.flusher');
         $flusherDefinition->addMethodCall('setStepSize', [$config['step_size']]);
 
+        $managerDefinition = $container->getDefinition('endroid_flusher.flusher_entity_manager');
+        $managerDefinition->addMethodCall('setFlusherEnabled', [!$config['disable_entity_manager_flusher']]);
+
         if (!$config['override_default_entity_manager']) {
             $container->removeDefinition('endroid_flusher.flusher_entity_manager');
         }

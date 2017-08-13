@@ -20,6 +20,11 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
     protected $flusher;
 
     /**
+     * @var bool
+     */
+    protected $flusherEnabled = true;
+
+    /**
      * @var EntityManagerInterface
      */
     protected $manager;
@@ -36,11 +41,27 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
     }
 
     /**
+     * @param bool $flusherEnabled
+     * @return $this
+     */
+    public function setFlusherEnabled($flusherEnabled)
+    {
+        $this->flusherEnabled = $flusherEnabled;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function flush($entity = null)
     {
-        $this->wrapped->flush();
+        // If the flusher is flushing: do not call it again
+        if ($this->flusherEnabled && !$this->flusher->isFlushing() && is_null($entity)) {
+            $this->flusher->flush();
+        } else {
+            $this->wrapped->flush($entity);
+        }
     }
 
     /**

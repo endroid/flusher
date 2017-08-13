@@ -40,6 +40,11 @@ class Flusher
     /**
      * @var bool
      */
+    protected $isFlushing = false;
+
+    /**
+     * @var bool
+     */
     protected $hasPendingFlushes = false;
 
     /**
@@ -73,10 +78,20 @@ class Flusher
     }
 
     /**
+     * @return bool
+     */
+    public function isFlushing()
+    {
+        return $this->isFlushing;
+    }
+
+    /**
      * Only executes when the current batch size is met.
      */
     public function flush()
     {
+        $this->isFlushing = true;
+
         $count = count($this->manager->getUnitOfWork()->getScheduledEntityInsertions()) + $this->manager->getUnitOfWork()->size();
 
         // Only flush upon latest of the current batch
@@ -93,6 +108,7 @@ class Flusher
 
         $event = $stopwatch->stop('flush');
 
+        $this->isFlushing = false;
         $this->hasPendingFlushes = false;
 
         $this->updateBatchSize($count, $event->getPeriods()[0]->getDuration());

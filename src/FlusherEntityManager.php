@@ -31,7 +31,7 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
 
     /**
      * @param EntityManagerInterface $wrapped
-     * @param Flusher $flusher
+     * @param Flusher                $flusher
      */
     public function __construct(EntityManagerInterface $wrapped, Flusher $flusher = null)
     {
@@ -42,6 +42,7 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
 
     /**
      * @param bool $flusherEnabled
+     *
      * @return $this
      */
     public function setFlusherEnabled($flusherEnabled)

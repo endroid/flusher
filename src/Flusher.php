@@ -11,7 +11,6 @@ namespace Endroid\Flusher;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Endroid\Flusher\Bundle\FlusherDemoBundle\Entity\Task;
 use Endroid\Flusher\Exception\PendingFlushesException;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -68,6 +67,7 @@ class Flusher
 
     /**
      * @param float $stepSize
+     *
      * @return $this
      */
     public function setStepSize($stepSize)
@@ -97,6 +97,7 @@ class Flusher
         // Only flush upon latest of the current batch
         if ($count < $this->batchSize) {
             $this->hasPendingFlushes = true;
+
             return;
         }
 

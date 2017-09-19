@@ -39,7 +39,7 @@ class LoadExampleDataCommand extends ContainerAwareCommand
     {
         $manager = $this->getEntityManager();
 
-        for ($n = 1; $n <= (int) $input->getOption('count'); $n++) {
+        for ($n = 1; $n <= (int) $input->getOption('count'); ++$n) {
             $task = new Task();
             $task->setName('Task '.$n);
             $manager->persist($task);

@@ -53,9 +53,6 @@ class Task
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString()
     {
         return $this->name;

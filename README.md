@@ -1,7 +1,7 @@
 Flusher
 =======
 
-*By [endroid](http://endroid.nl/)*
+*By [endroid](https://endroid.nl/)*
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
 [![Build Status](http://img.shields.io/travis/endroid/Flusher.svg)](http://travis-ci.org/endroid/Flusher)
@@ -58,21 +58,12 @@ $flusher->finish();
 
 ## Symfony integration
 
-The library comes with a Symfony bundle that registers a flusher service
-(endroid_flusher.flusher) for your default entity manager. You can register the
-Symfony bundle in the kernel as follows.
+The [endroid/flusher-bundle](https://github.com/endroid/EndroidFlusherBundle)
+integrates this library in Symfony and provides the following features.
 
-```php
-// app/AppKernel.php
-
-public function registerBundles()
-{
-    $bundles = [
-        // ...
-        new Endroid\Flusher\Bundle\FlusherBundle\EndroidFlusherBundle(),
-    ];
-}
-```
+* Optional replacement your default entity manager with the FlusherEntityManager
+* Configuration of the step size used when determining the optimal batch size
+* Injection of the Flusher or the FlusherEntityManager anywhere in your application
 
 ## Versioning
 

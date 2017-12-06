@@ -14,25 +14,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class FlusherEntityManager extends EntityManagerDecorator implements EntityManagerInterface
 {
-    /**
-     * @var Flusher
-     */
-    protected $flusher;
+    private $flusher;
+    private $flusherEnabled = true;
 
-    /**
-     * @var bool
-     */
-    protected $flusherEnabled = true;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $manager;
-
-    /**
-     * @param EntityManagerInterface $wrapped
-     * @param Flusher                $flusher
-     */
     public function __construct(EntityManagerInterface $wrapped, Flusher $flusher = null)
     {
         parent::__construct($wrapped);
@@ -40,22 +24,12 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
         $this->flusher = $flusher;
     }
 
-    /**
-     * @param bool $flusherEnabled
-     *
-     * @return $this
-     */
-    public function setFlusherEnabled($flusherEnabled)
+    public function setFlusherEnabled(bool $flusherEnabled): void
     {
         $this->flusherEnabled = $flusherEnabled;
-
-        return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function flush($entity = null)
+    public function flush($entity = null): void
     {
         // If the flusher is flushing: do not call it again
         if ($this->flusherEnabled && !$this->flusher->isFlushing() && is_null($entity)) {
@@ -65,10 +39,7 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
         }
     }
 
-    /**
-     * Makes sure all pending flushes are executed.
-     */
-    public function finish()
+    public function finish(): void
     {
         $this->flusher->finish();
     }

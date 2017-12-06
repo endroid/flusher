@@ -16,39 +16,13 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class Flusher
 {
-    /**
-     * @var EntityManager
-     */
-    protected $manager;
+    private $manager;
+    private $stepSize = 1.5;
+    private $batchSize;
+    private $ratios;
+    private $isFlushing = false;
+    private $hasPendingFlushes = false;
 
-    /**
-     * @var float
-     */
-    protected $stepSize = 1.5;
-
-    /**
-     * @var int
-     */
-    protected $batchSize;
-
-    /**
-     * @var float[]
-     */
-    protected $ratios;
-
-    /**
-     * @var bool
-     */
-    protected $isFlushing = false;
-
-    /**
-     * @var bool
-     */
-    protected $hasPendingFlushes = false;
-
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
@@ -57,38 +31,22 @@ class Flusher
         $this->batchSize = 1;
     }
 
-    /**
-     * @return EntityManager
-     */
-    public function getManager()
+    public function getManager(): EntityManagerInterface
     {
         return $this->manager;
     }
 
-    /**
-     * @param float $stepSize
-     *
-     * @return $this
-     */
-    public function setStepSize($stepSize)
+    public function setStepSize(int $stepSize): void
     {
         $this->stepSize = $stepSize;
-
-        return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isFlushing()
+    public function isFlushing(): bool
     {
         return $this->isFlushing;
     }
 
-    /**
-     * Only executes when the current batch size is met.
-     */
-    public function flush()
+    public function flush(): void
     {
         $this->isFlushing = true;
 
@@ -116,8 +74,8 @@ class Flusher
     }
 
     /**
-     * Makes sure all last items are flushed even if the batch
-     * size was not reached yet.
+     * Makes sure all last items are flushed.
+     * Even when the batch size is not reached yet.
      */
     public function finish()
     {
@@ -126,11 +84,7 @@ class Flusher
         $this->hasPendingFlushes = false;
     }
 
-    /**
-     * @param int $count
-     * @param int $duration
-     */
-    protected function updateBatchSize($count, $duration)
+    protected function updateBatchSize(int $count, int $duration): void
     {
         $ratio = $duration / $count;
 
@@ -144,14 +98,11 @@ class Flusher
         }
     }
 
-    protected function increaseBatchSize()
+    protected function increaseBatchSize(): void
     {
         $this->batchSize = (int) ceil($this->batchSize * $this->stepSize);
     }
 
-    /**
-     * Checks if there exist pending flushes that are not executed.
-     */
     public function __destruct()
     {
         if ($this->hasPendingFlushes) {

@@ -36,7 +36,7 @@ class Flusher
         return $this->manager;
     }
 
-    public function setStepSize(int $stepSize): void
+    public function setStepSize(float $stepSize): void
     {
         $this->stepSize = $stepSize;
     }

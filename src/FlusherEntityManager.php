@@ -17,10 +17,8 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
     private $flusher;
     private $flusherEnabled = true;
 
-    public function __construct(EntityManagerInterface $wrapped, Flusher $flusher = null)
+    public function setFlusher(Flusher $flusher)
     {
-        parent::__construct($wrapped);
-
         $this->flusher = $flusher;
     }
 

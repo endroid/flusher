@@ -9,7 +9,6 @@
 
 namespace Endroid\Flusher;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\Flusher\Exception\PendingFlushesException;
 use Symfony\Component\Stopwatch\Stopwatch;

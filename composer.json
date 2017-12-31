@@ -2,7 +2,7 @@
     "name": "endroid/flusher",
     "description": "Endroid Flusher",
     "keywords": ["endroid", "flusher"],
-    "homepage": "https://github.com/endroid/Flusher",
+    "homepage": "https://github.com/endroid/flusher",
     "type": "library",
     "license": "MIT",
     "authors": [

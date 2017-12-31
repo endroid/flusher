@@ -1,5 +1,4 @@
-Flusher
-=======
+# Flusher
 
 *By [endroid](https://endroid.nl/)*
 
@@ -58,7 +57,7 @@ $flusher->finish();
 
 ## Symfony integration
 
-The [endroid/flusher-bundle](https://github.com/endroid/EndroidFlusherBundle)
+The [endroid/flusher-bundle](https://github.com/endroid/flusher-bundle)
 integrates this library in Symfony and provides the following features.
 
 * Optional replacement your default entity manager with the FlusherEntityManager

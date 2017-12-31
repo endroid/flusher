@@ -1,7 +1,7 @@
 {
     "name": "endroid/flusher",
     "description": "Endroid Flusher",
-    "keywords": ["endroid", "flusher"],
+    "keywords": ["endroid", "flusher", "php"],
     "homepage": "https://github.com/endroid/flusher",
     "type": "library",
     "license": "MIT",

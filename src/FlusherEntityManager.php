@@ -32,10 +32,10 @@ class FlusherEntityManager extends EntityManagerDecorator implements EntityManag
     public function flush($entity = null): void
     {
         // If the flusher is flushing: do not call it again
-        if ($this->flusherEnabled && !$this->flusher->isFlushing() && is_null($entity)) {
+        if ($this->flusherEnabled && !$this->flusher->isFlushing()) {
             $this->flusher->flush();
         } else {
-            $this->wrapped->flush($entity);
+            $this->wrapped->flush();
         }
     }
 

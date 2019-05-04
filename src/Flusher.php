@@ -71,7 +71,7 @@ class Flusher
         $this->isFlushing = false;
         $this->hasPendingFlushes = false;
 
-        $this->updateBatchSize($count, $event->getPeriods()[0]->getDuration());
+        $this->updateBatchSize($count, (int) $event->getPeriods()[0]->getDuration());
     }
 
     /**

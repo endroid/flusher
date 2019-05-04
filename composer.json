@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=7.2",
-        "doctrine/orm": "^2.6",
+        "doctrine/orm": "^2.6.3",
         "endroid/installer": "^1.0.3",
         "symfony/stopwatch": "^3.4|^4.0"
     },

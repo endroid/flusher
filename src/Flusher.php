@@ -19,17 +19,14 @@ class Flusher
 {
     private $manager;
     private $stepSize = 1.5;
-    private $batchSize;
-    private $ratios;
+    private $batchSize = 1;
+    private $ratios = [];
     private $isFlushing = false;
     private $hasPendingFlushes = false;
 
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
-
-        $this->ratios = [];
-        $this->batchSize = 1;
     }
 
     public function getManager(): EntityManagerInterface
@@ -74,10 +71,6 @@ class Flusher
         $this->updateBatchSize($count, (int) $event->getPeriods()[0]->getDuration());
     }
 
-    /**
-     * Makes sure all last items are flushed.
-     * Even when the batch size is not reached yet.
-     */
     public function finish()
     {
         $this->manager->flush();

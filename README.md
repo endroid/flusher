@@ -3,7 +3,7 @@
 *By [endroid](https://endroid.nl/)*
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
-[![Build Status](http://img.shields.io/travis/endroid/flusher.svg)](http://travis-ci.org/endroid/flusher)
+[![Build Status](https://github.com/endroid/flusher/workflows/CI/badge.svg)](https://github.com/endroid/flusher/actions)
 [![Total Downloads](http://img.shields.io/packagist/dt/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
 [![Monthly Downloads](http://img.shields.io/packagist/dm/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)
 [![License](http://img.shields.io/packagist/l/endroid/flusher.svg)](https://packagist.org/packages/endroid/flusher)

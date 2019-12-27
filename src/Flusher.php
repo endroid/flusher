@@ -18,15 +18,15 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class Flusher
 {
     private $manager;
-    private $stepSize = 1.5;
+    private $stepSize;
     private $batchSize = 1;
     private $ratios = [];
-    private $isFlushing = false;
     private $hasPendingFlushes = false;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, float $stepSize = 1.5)
     {
         $this->manager = $manager;
+        $this->stepSize = $stepSize;
     }
 
     public function getManager(): EntityManagerInterface
@@ -34,20 +34,8 @@ class Flusher
         return $this->manager;
     }
 
-    public function setStepSize(float $stepSize): void
-    {
-        $this->stepSize = $stepSize;
-    }
-
-    public function isFlushing(): bool
-    {
-        return $this->isFlushing;
-    }
-
     public function flush(): void
     {
-        $this->isFlushing = true;
-
         $count = count($this->manager->getUnitOfWork()->getScheduledEntityInsertions()) + $this->manager->getUnitOfWork()->size();
 
         // Only flush upon latest of the current batch
@@ -65,7 +53,6 @@ class Flusher
 
         $event = $stopwatch->stop('flush');
 
-        $this->isFlushing = false;
         $this->hasPendingFlushes = false;
 
         $this->updateBatchSize($count, (int) $event->getPeriods()[0]->getDuration());

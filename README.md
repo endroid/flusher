@@ -55,15 +55,6 @@ need to call finish() to make sure all data is flushed.
 $flusher->finish();
 ```
 
-## Symfony integration
-
-The [endroid/flusher-bundle](https://github.com/endroid/flusher-bundle)
-integrates this library in Symfony and provides the following features.
-
-* Optional replacement your default entity manager with the FlusherEntityManager
-* Configuration of the step size used when determining the optimal batch size
-* Injection of the Flusher or the FlusherEntityManager anywhere in your application
-
 ## Versioning
 
 Version numbers follow the MAJOR.MINOR.PATCH scheme. Backwards compatibility

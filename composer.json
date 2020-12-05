@@ -12,9 +12,9 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": "^7.3||^8.0",
         "doctrine/orm": "^2.6.3",
-        "endroid/installer": "^1.2.2",
+        "endroid/installer": "^1.3.2",
         "symfony/stopwatch": "^3.4||^4.4||^5.0"
     },
     "require-dev": {

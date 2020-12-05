@@ -17,10 +17,19 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class Flusher
 {
+    /** @var EntityManagerInterface */
     private $manager;
+
+    /** @var float */
     private $stepSize;
+
+    /** @var int */
     private $batchSize = 1;
+
+    /** @var array<float> */
     private $ratios = [];
+
+    /** @var bool */
     private $hasPendingFlushes = false;
 
     public function __construct(EntityManagerInterface $manager, float $stepSize = 1.5)
@@ -58,7 +67,7 @@ class Flusher
         $this->updateBatchSize($count, (int) $event->getPeriods()[0]->getDuration());
     }
 
-    public function finish()
+    public function finish(): void
     {
         $this->manager->flush();
 
@@ -71,7 +80,10 @@ class Flusher
 
         $this->ratios[$this->batchSize] = $ratio;
 
-        $this->batchSize = array_search(min($this->ratios), $this->ratios);
+        /** @var int $minBatchSize */
+        $minBatchSize = array_search(min($this->ratios), $this->ratios);
+
+        $this->batchSize = $minBatchSize;
 
         // Best batch size is the maximum batch size: try a higher value
         if ($this->batchSize == max(array_keys($this->ratios))) {

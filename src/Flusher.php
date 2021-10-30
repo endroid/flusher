@@ -17,20 +17,14 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class Flusher
 {
-    /** @var EntityManagerInterface */
-    private $manager;
-
-    /** @var float */
-    private $stepSize;
-
-    /** @var int */
-    private $batchSize = 1;
+    private EntityManagerInterface $manager;
+    private float $stepSize;
+    private int $batchSize = 1;
 
     /** @var array<float> */
-    private $ratios = [];
+    private array $ratios = [];
 
-    /** @var bool */
-    private $hasPendingFlushes = false;
+    private bool $hasPendingFlushes = false;
 
     public function __construct(EntityManagerInterface $manager, float $stepSize = 1.5)
     {

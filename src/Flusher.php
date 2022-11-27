@@ -2,13 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) Jeroen van den Enden <info@endroid.nl>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Endroid\Flusher;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,8 +10,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class Flusher
 {
-    private EntityManagerInterface $manager;
-    private float $stepSize;
     private int $batchSize = 1;
 
     /** @var array<float> */
@@ -26,10 +17,10 @@ class Flusher
 
     private bool $hasPendingFlushes = false;
 
-    public function __construct(EntityManagerInterface $manager, float $stepSize = 1.5)
-    {
-        $this->manager = $manager;
-        $this->stepSize = $stepSize;
+    public function __construct(
+        private EntityManagerInterface $manager,
+        private float $stepSize = 1.5
+    ) {
     }
 
     public function getManager(): EntityManagerInterface

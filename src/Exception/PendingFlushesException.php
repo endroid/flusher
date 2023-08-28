@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Endroid\Flusher\Exception;
 
-class PendingFlushesException extends FlusherException
+final class PendingFlushesException extends FlusherException
 {
 }

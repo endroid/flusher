@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Endroid\Flusher\Exception\PendingFlushesException;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-class Flusher
+final class Flusher
 {
     private int $batchSize = 1;
 
@@ -18,14 +18,9 @@ class Flusher
     private bool $hasPendingFlushes = false;
 
     public function __construct(
-        private EntityManagerInterface $manager,
-        private float $stepSize = 1.5
+        private readonly EntityManagerInterface $manager,
+        private readonly float $stepSize = 1.5
     ) {
-    }
-
-    public function getManager(): EntityManagerInterface
-    {
-        return $this->manager;
     }
 
     public function flush(): void

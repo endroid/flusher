@@ -54,7 +54,7 @@ final class Flusher
         $this->hasPendingFlushes = false;
     }
 
-    protected function updateBatchSize(int $count, int $duration): void
+    private function updateBatchSize(int $count, int $duration): void
     {
         $ratio = $duration / $count;
 
@@ -71,7 +71,7 @@ final class Flusher
         }
     }
 
-    protected function increaseBatchSize(): void
+    private function increaseBatchSize(): void
     {
         $this->batchSize = (int) ceil($this->batchSize * $this->stepSize);
     }

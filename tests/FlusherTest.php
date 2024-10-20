@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace Endroid\Flusher\Tests;
 
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\ORMSetup;
 use Endroid\Flusher\Flusher;
 use PHPUnit\Framework\TestCase;
 
-class FlusherTest extends TestCase
+final class FlusherTest extends TestCase
 {
     public function testCreateFlusher()
     {
-        $config = Setup::createAnnotationMetadataConfiguration(['/'], true);
-        $entityManager = EntityManager::create([
-            'driver' => 'pdo_mysql',
-            'user' => 'root',
-            'password' => 'root',
-            'dbname' => 'flusher',
-        ], $config);
+        $config = ORMSetup::createAttributeMetadataConfiguration(['/'], true);
+        $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'path' => __DIR__.'/db.sqlite']);
+        $entityManager = new EntityManager($connection, $config);
 
         $flusher = new Flusher($entityManager);
         $flusher->flush();

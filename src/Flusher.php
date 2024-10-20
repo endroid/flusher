@@ -19,7 +19,7 @@ final class Flusher
 
     public function __construct(
         private readonly EntityManagerInterface $manager,
-        private readonly float $stepSize = 1.5
+        private readonly float $stepSize = 1.5,
     ) {
     }
 

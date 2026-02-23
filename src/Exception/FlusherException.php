@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Endroid\Flusher\Exception;
 
-abstract class FlusherException extends \Exception
-{
-}
+abstract class FlusherException extends \Exception {}

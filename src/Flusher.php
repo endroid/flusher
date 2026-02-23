@@ -20,12 +20,13 @@ final class Flusher
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly float $stepSize = 1.5,
-    ) {
-    }
+    ) {}
 
     public function flush(): void
     {
-        $count = count($this->manager->getUnitOfWork()->getScheduledEntityInsertions()) + $this->manager->getUnitOfWork()->size();
+        $count =
+            count($this->manager->getUnitOfWork()->getScheduledEntityInsertions())
+            + $this->manager->getUnitOfWork()->size();
 
         // Only flush upon latest of the current batch
         if ($count < $this->batchSize) {
@@ -44,7 +45,8 @@ final class Flusher
 
         $this->hasPendingFlushes = false;
 
-        $this->updateBatchSize($count, (int) $event->getPeriods()[0]->getDuration());
+        $periods = $event->getPeriods();
+        $this->updateBatchSize($count, (int) ($periods[0] ?? null)?->getDuration());
     }
 
     public function finish(): void
@@ -60,13 +62,15 @@ final class Flusher
 
         $this->ratios[$this->batchSize] = $ratio;
 
+        $minRatio = min($this->ratios);
+
         /** @var int $minBatchSize */
-        $minBatchSize = array_search(min($this->ratios), $this->ratios);
+        $minBatchSize = array_find_key($this->ratios, static fn(float $ratio): bool => $ratio === $minRatio);
 
         $this->batchSize = $minBatchSize;
 
         // Best batch size is the maximum batch size: try a higher value
-        if ($this->batchSize == max(array_keys($this->ratios))) {
+        if ($this->batchSize === max(array_keys($this->ratios))) {
             $this->increaseBatchSize();
         }
     }

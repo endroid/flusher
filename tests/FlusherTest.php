@@ -15,6 +15,7 @@ final class FlusherTest extends TestCase
     public function testCreateFlusher()
     {
         $config = ORMSetup::createAttributeMetadataConfiguration(['/'], true);
+        $config->enableNativeLazyObjects(true);
         $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'path' => __DIR__.'/db.sqlite']);
         $entityManager = new EntityManager($connection, $config);
 

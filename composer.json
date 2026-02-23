@@ -19,7 +19,8 @@
         "symfony/stopwatch": "^6.4||^7.4||^8.0"
     },
     "require-dev": {
-        "endroid/quality": "dev-main"
+        "endroid/quality": "dev-main",
+        "symfony/var-exporter": "^8.0"
     },
     "suggest": {
         "roave/security-advisories": "Avoids installation of package versions with vulnerabilities"
@@ -42,7 +43,8 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "endroid/installer": true
+            "endroid/installer": true,
+            "carthage-software/mago": true
         }
     }
 }
